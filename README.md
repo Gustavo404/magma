@@ -14,15 +14,19 @@ Magma é um conjunto de scripts que gerenciam a saída de dados txt do _UNM2000_
 - Salva essa lista em um arquivo de texto.
 - Converte esse arquivo de saída em uma tabela visualizável (.xlsx).
 
+<br>
+
 ## Dependências
 
-O Magma requer apenas o git para ser baixado:
+O Magma requer o git para ser baixado:
 
 ```bash
 apt-get install git
 ```
 
-Após isso, o arquivo [install](https://github.com/gustavo404/wildlist/blob/main/install) instalará o _awk_ e o _python_ via apt, junto com o módulo pandas do Python via pip. Para mais informações, clique [aqui](https://github.com/gustavo404/wildlist/blob/main/install).
+Você tambem pode baixar o pacote compactado!
+
+<br>
 
 ## Instalação
 
@@ -42,16 +46,13 @@ Por fim, execute o instalador:
 ```bash
 bash install.sh
 ```
+
+<br>
+
 ## Uso
 
 Você precisará informar um arquivo de texto referente à saída do _UNM2000_:
 ```bash
 bash magma.sh dadosUnm.txt
 ```
-Após isso, o _magma.sh_ executará o _magma.py_, que fará a conversão de _txt_ para _xlsx_.
-
-## Links
-
-Você também pode baixar o código no pacote compactado:
-
-[![backup](https://img.shields.io/badge/backup-tar%20gz-blueviolet)](https://github.com/Gustavo404/wildlist/raw/main/wildlist)
+Após isso, o _magma.sh_ escreverá as mudanças num novo arquivo de texto, e executará o _magma.py_, que fará a conversão de _txt_ para _xlsx_.
