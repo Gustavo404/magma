@@ -6,7 +6,7 @@
   
 ## Descrição
 
-Magma é um conjunto de scripts que gerenciam a saída de dados txt do _UNM2000_, permitindo renomear em massa os nomes de usuários (alterar o "device name"). Ele lê a saída de texto do _UNM2000_ informada pelo usuário e realiza as seguintes mudanças:
+Magma é um conjunto de scripts que gerenciam a saída de dados do terminal do _BRAS_, facilitando a renomeação em massa dos nomes de usuários (alterar o "device name"). Ele lê um arquivo de texto informada pelo usuário e realiza as seguintes mudanças:
 
 - Remove as linhas com o texto "PPPoE".
 - Identifica os "ETH" com base nas posições nas colunas, delimitadas por espaços.
@@ -53,10 +53,10 @@ bash install.sh
 
 ## Uso
 
-Você precisará informar um arquivo de texto referente à saída do _UNM2000_:
+Você precisará informar um arquivo de texto referente à saída do _BRAS_:
 
 ```bash
-bash magma.sh dadosUnm.txt
+bash magma.sh dadosBras.txt
 ```
 
 Após isso, o _magma.sh_ escreverá as mudanças num novo arquivo de texto, e executará o _magma.py_, que fará a conversão de _txt_ para _xlsx_.
@@ -83,7 +83,7 @@ Este script, `install.sh`, é responsável por instalar as dependências necess�
 
 ### Código 2: `magma.sh`
 
-O script `magma.sh` é o núcleo do projeto 'magma'. Ele lê um arquivo de texto de saída do _UNM2000_ e realiza várias etapas de processamento. Aqui está uma visão geral das principais tarefas realizadas:
+O script `magma.sh` é o núcleo do projeto 'magma'. Ele lê um arquivo de texto contendo uma saída do terminal _BRAS_ e realiza várias etapas de processamento. Aqui está uma visão geral das principais tarefas realizadas:
 
 1. Define nomes de arquivos como variáveis para facilitar a referência posterior.
 
@@ -121,7 +121,7 @@ O script `magma.py` é responsável por converter o arquivo de texto resultante 
 
 Este script é usado pelo `magma.sh` para realizar a etapa de conversão de formato. O uso do `tqdm` cria uma animação de progresso para melhorar a experiência do usuário durante a conversão.
 
-Esta é uma visão geral da funcionalidade dos três scripts que compõem o projeto 'magma'. Eles trabalham em conjunto para processar, formatar e converter dados de saída do _UNM2000_ em um formato XLSX mais legível.
+Esta é uma visão geral da funcionalidade dos três scripts que compõem o projeto 'magma'. Eles trabalham em conjunto para processar, formatar e converter dados de saída do _BRAS_ em um formato XLSX mais legível.
 
 <br>
 
