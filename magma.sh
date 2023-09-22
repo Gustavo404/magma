@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Definindo nomes de arquivos como variáveis
+arquivo_alvo="$1"
+arquivo_temp_1="1.tmp.txt"
+arquivo_temp_2="2.tmp.txt"
+
 # Função para mostrar mensagens coloridas
 function color_message() {
   local color=$1
@@ -14,69 +19,82 @@ function color_message() {
     "blue")
       echo -e "\e[94m$message\e[0m"
       ;;
-    "yellow")
-      echo -e "\e[93m$message\e[0m"
-      ;;
     *)
       echo "$message"
       ;;
   esac
 }
 
-# Diálogo de boas-vindas
+# Limpar a tela (favor não questionar a necessidade desta linha)
 clear
-color_message "green" "Bem-vindo ao Obsidian"
-echo -e "Este script irá filtrar as linhas com valores de dBm inferiores ao limite especificado."
-echo -e "exemplos de valores:    maximo: -26    minimo: -39"
-# Solicita o limite maximo de valor em dBm ao usuário
+
+# ...
+
+# Remova as linhas com "PPPoE"
+cat "$arquivo_alvo"
 echo
-color_message "yellow" "\n[...] Por favor, insira o limite maximo:"
-read teto_dBm
-
-# Solicita o limite minimo de valor em dBm ao usuário
 echo
-color_message "yellow" "\n[...] Por favor, insira o limite minimo inferior a $teto_dBm:"
-read piso_dBm
+color_message "blue" "[!] Removendo linhas com PPPoE - Pressione Enter para prosseguir"
+read
+awk '!/PPPoE/' "$arquivo_alvo" > "$arquivo_temp_1"
 
-# Solicita o nome do arquivo de entrada
+# Identifique ETH
+cat "$arquivo_temp_1"
 echo
-color_message "yellow" "[...] Agora, insira o nome do arquivo de entrada:"
-read input
-
-# Solicita o nome do arquivo de saída
-echo
-color_message "yellow" "[...] Insira o nome do arquivo de saída:"
-read output
-
-color_message "blue" "[ ! ] Efetuando alterações!"
-# Aplicando o filtro com AWK usando o limite especificado
-awk -v teto="$teto_dBm" -F'\t' '$2 >= teto' "$input" > .tmp
-awk -v piso="$piso_dBm" -F'\t' '$2 <= piso' .tmp > "$output"
-
-# Aplicando o filtro com SED para remover linhas vazias
-sed -i '/^$/d' "$output"
-sleep 0.5
-
-# Verifica se o arquivo foi criado com sucesso
-if [ -e "$output" ]; then
-  color_message "green" "[!] O arquivo $output criado com sucesso!"
-  rm .tmp
-else
-  color_message "red" "[!] Houve um erro ao criar o arquivo $output, verifique obsidian/.tmp"
-fi
-
-# Extrair clientes com sinal igual a -40 dBm
-read -p "[?] Deseja extrair os clientes com sinal igual a -40 dBm? (Y/n)" response
-if [ "$response" = "n" ] || [ "$response" = "N" ]; then
-  color_message "yellow" "[ . ] Processo finalizado."
+eth="$(awk 'NR>300 {print $3; exit}' "$arquivo_temp_1")"
+color_message "green" "[!] ETH = $eth"
+read -p "[?] Isto está correto? (Y/n)" input
+if [ "$input" = "n" ]; then
+  color_message "red" "[!] Abortar!"
   sleep 1
   exit
 else
   color_message "blue" "[...] Prosseguindo..."
-  awk -F'\t' '$2 == -40' "$input" > 40dBm.txt
 fi
+color_message "blue" "[!] Removendo ETH - Pressione Enter para prosseguir"
+read
 
-# Mensagem de conclusão
-color_message "green" "\nFiltro concluído com sucesso!"
-echo -e "As linhas com valores de dBm superiores a $teto_dBm foram removidas."
-echo -e "Os resultados foram salvos em \e[1m$output\e[0m."
+# Remova o "ETH"
+awk -v eth="$eth" '{gsub(eth, "");}1' "$arquivo_temp_1" > "$arquivo_temp_2"
+
+# Remova o conteúdo da primeira e terceira coluna, referentes aos IDs e IPs, delimitadas por espaços
+cat "$arquivo_temp_2"
+color_message "blue" "[!] Removendo IPs e IDs - Pressione Enter para prosseguir"
+read
+awk '{$1=""; $3=""; sub(/^ +/, "")}1' "$arquivo_temp_2" > "$arquivo_temp_1"
+
+# Mude o formato do MAC de XXXX-XXXX-XXXX para XX:XX:XX:XX:XX:XX
+cat "$arquivo_temp_1"
+color_message "blue" "[!] Formatando MAC de XXXX-XXXX-XXXX para XX:XX:XX:XX:XX:XX - Pressione Enter para prosseguir"
+read
+awk '{gsub(/-/, "", $2); mac = $2; gsub(/../, "&:", mac); mac = substr(mac, 1, length(mac)-1); print $1, mac;}' "$arquivo_temp_1" | sed 's/:$//' > magma.txt
+
+# Debug
+# awk '{ mac = $2; gsub(/-/, "", mac); gsub(/../, "&:", mac); mac = substr(mac, 1, length(mac)-1); print $1, mac;}' "$arquivo_temp_1" | sed 's/:$//' > drax.txt
+
+cat magma.txt
+color_message "green" "[!] Etapa 1 finalizada!"
+sleep 0.3
+echo
+color_message "blue" "[!] Preparando para converter arquivo para XLSX"
+sleep 0.2
+color_message "blue" "[...] iniciando magma.py..."
+
+# Execução do script de conversão magma.py
+python3 magma.py
+
+# Verifique se o arquivo magma.xlsx foi criado
+# Se sim, anuncie e limpe o diretorio
+# se não, anuncie e mantenha os arquivos temp
+
+arquivo="magma.xlsx"
+
+if [ -e "$arquivo" ]; then
+  color_message "green" "[!] O arquivo $arquivo foi criado com sucesso!"
+  color_message "green" "[!] Processo finalizado."
+  rm $arquivo_temp_1
+  rm $arquivo_temp_2
+else
+  color_message "red" "[!] Houve um erro ao converter magma.txt em $arquivo."
+  color_message "red" "[!] Verifique se as dependências foram instaladas corretamente."
+fi
