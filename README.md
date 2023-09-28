@@ -19,6 +19,13 @@ Magma é um conjunto de scripts que gerenciam a saída de dados do terminal do _
 <br>
 
 ## Dependências
+O Magma depende de alguns pacotes APT do linux para poder funcionar corretamente, no geral, o magma depende de:
+- **Bash:** O Bash é o interpretador de shell padrão na maioria dos sistemas Unix e Linux. Certifique-se de que o Bash esteja instalado e seja a shell padrão no seu sistema.
+- **Python:** É necessário ter o Python instalado no sistema para executar o script.
+- **Bibliotecas Python:** Instale as bibliotecas Python necessárias usando o pip. As bibliotecas usadas incluem o openpyxl, pandas e tqdm.
+<br>
+
+## Instalação
 
 O Magma requer o git para ser baixado:
 
@@ -27,10 +34,6 @@ apt-get install git
 ```
 
 Você tambem pode baixar o pacote compactado!
-
-<br>
-
-## Instalação
 
 Primeiro, baixe o Magma usando o git:
 
