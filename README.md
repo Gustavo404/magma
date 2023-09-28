@@ -8,13 +8,13 @@
 
 Magma é um conjunto de scripts que gerenciam a saída de dados do terminal do _BRAS_, facilitando a renomeação em massa dos nomes de usuários (alterar o "device name"). Ele lê um arquivo de texto informada pelo usuário e realiza as seguintes mudanças:
 
-- Remove as linhas com o texto "PPPoE".
-- Identifica os "ETH" com base nas posições nas colunas, delimitadas por espaços.
-- Remove as informações referentes aos "ETH".
-- Remove os IDs e IPs da lista.
-- Corrige os MACs (XXXX-XXXX-XXXX > XX:XX:XX:XX:XX:XX).
-- Salva essa lista em um arquivo de texto.
-- Converte esse arquivo de saída em uma tabela visualizável (.xlsx).
+1. Remove as linhas com o texto "PPPoE".
+2. Identifica os "ETH" com base nas posições nas colunas, delimitadas por espaços.
+3. Remove as informações referentes aos "ETH".
+4. Remove os IDs e IPs da lista.
+5. Corrige os MACs (XXXX-XXXX-XXXX > XX:XX:XX:XX:XX:XX).
+6. Salva essa lista em um arquivo de texto.
+7. Converte esse arquivo de saída em uma tabela visualizável (.xlsx).
 
 <br>
 
