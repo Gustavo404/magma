@@ -23,7 +23,7 @@ O Magma depende de alguns pacotes APT do linux para poder funcionar corretamente
 - **Bash:** O Bash é o interpretador de shell padrão na maioria dos sistemas Unix e Linux. Certifique-se de que o Bash esteja instalado e seja a shell padrão no seu sistema.
 - **Python:** É necessário ter o Python instalado no sistema para executar o script.
 - **Bibliotecas Python:** Instale as bibliotecas Python necessárias usando o pip. As bibliotecas usadas incluem o openpyxl, pandas e tqdm.
-<br>
+> Em algumas distribuições pode ser necessario baixar o pacote python3-pip para instalar dependencias via pip
 
 ## Instalação
 
@@ -51,8 +51,6 @@ Por fim, execute o instalador:
 ```bash
 bash install.sh
 ```
-
-<br>
 
 ## Uso
 
@@ -125,8 +123,6 @@ O script `magma.py` é responsável por converter o arquivo de texto resultante 
 Este script é usado pelo `magma.sh` para realizar a etapa de conversão de formato. O uso do `tqdm` cria uma animação de progresso para melhorar a experiência do usuário durante a conversão.
 
 Esta é uma visão geral da funcionalidade dos três scripts que compõem o projeto 'magma'. Eles trabalham em conjunto para processar, formatar e converter dados de saída do _BRAS_ em um formato XLSX mais legível.
-
-<br>
 
 
 ## Feedback, Perguntas e Relatórios de Problemas
